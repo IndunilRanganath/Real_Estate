@@ -44,14 +44,20 @@ try {
 
 //get all residencies
 
+
 export const getAllResidencies = expressAsyncHandler(async (req, res) => {
-    const residencies = await prisma.residency.findMany({
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
-    res.send(residencies);
+    try {
+        const residencies = await prisma.residency.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+        res.status(200).json({ residencies });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching residencies", error: error.message });
+    }
 });
+
 
 
 //get residency by id
